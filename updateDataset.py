@@ -2,6 +2,12 @@
 # -*- coding: UTF-8 -*-
 #
 
+mapDict = {}
+mapArr = ["Zero Page", "6502 Processor Stack", "GETLN Line Input Buffer", "Free Space for Machine Language, Shape Table, etc.", "DOS, ProDOS, and Interrupt Vectors", "Text Video Page and Peripheral Screenholes", "Text Video Page 2 or Applesoft Program and Variables", "Free Space for Machine Language, Shapes, etc.", "High Resolution Graphics Page 1", "High Resolution Graphics Page 2", "Applesoft String Data", "Soft Switches and Status Locations", "Peripheral Card Memory", "Extended Memory for Peripheral Card in Use", "Extensions to System Monitor", "80-Column Display Routines", "Self-Test Routines", "Applesoft Interpreter", "System Monitor", "Other"]
+
+def init():
+	for map in mapArr:
+		mapDict[map] = 0
 
 def calcMemMap(addr):
 	if   (addr >= 0 and addr <= 255): return "Zero Page"
@@ -26,22 +32,48 @@ def calcMemMap(addr):
 
 	else: return "Other"
 
-file  = open("dataSet.txt", "r") 
-f = open("modDataSet.txt", "w+")
+def addMapToTrace():
+	file  = open("marblemadness.trace", "r") 
+	f = open("modDataSet.txt", "w+")
 
-for line in file:
-	# Split line into an array of string with " " as the delimeter
-	el = line.split(" ")
+	for line in file:
+		# Split line into an array of string with " " as the delimeter
+		el = line.split(" ")
 	
-	if len(el) > 1:
-		addr = el[1][3:]
-		addrInt = int(addr, 16)
+		if len(el) > 1:
+			addr = el[1][3:]
+			try:
+				addrInt = int(addr, 16)
+			except ValueError:
+				continue
+			mem = calcMemMap(addrInt)
 		
-		mem = calcMemMap(addrInt)
-		
-		# Retrieve the PC counter element while ignoring the '/n' character
-		el[2] = el[2][0:7]
-		s = el[0] + " " + el[1] + " " + el[2] + " " + mem + "\n"
+			# Retrieve the PC counter element while ignoring the '/n' character
+			el[2] = el[2][0:7]
+			s = el[0] + "  " + el[1] + "  " + el[2] + "  " + mem + "\n"
+			f.write(s)
+
+	file.close() 
+
+def countMapAccesses():
+	file = open("modDataSet.txt", "r")
+	f = open("numberOfAccessToMap.txt", "w+")
+
+	for line in file:
+		el = line.split("  ")
+
+		if len(el) > 1:
+			map = el[3].split("\n")
+			mapDict[map[0]] += 1
+	for map in mapDict:
+		s = map + " " + str(mapDict[map]) + "\n"
 		f.write(s)
 
-file.close() 
+def main():
+	init()
+	countMapAccesses()
+	#addMapToTrace()
+
+if __name__ == "__main__":
+    main()
+
