@@ -1,0 +1,48 @@
+#keyRect {
+    float: left;
+    width: 30px; 
+    height:30px;
+}
+
+#padLeft {
+	padding-left: 20px;
+}
+
+.grid { margin:1em auto; border-collapse:collapse }
+.grid td {
+    cursor:pointer;
+    width:30px; height:30px;
+    border:1px solid #b38600;
+    text-align:center;
+    background-color: #b8b894;
+
+    font-family:sans-serif; font-size:13px
+}
+
+.grid td.selectedRead {
+    background-color:#ffff66;
+    font-weight:bold; color:black;
+}
+
+
+.grid td.selectedRead {
+    background-color:#ffff66;
+    border:2px solid #009933;
+    font-weight:bold; color:black;
+}
+
+.grid td.selectedWrite {
+    background-color:#ffff66;
+    border:2px solid #ff6600;
+    font-weight:bold; color:black;
+}
+
+.grid td.read {
+    background-color:#009933;
+    font-weight:bold; color:white;
+}
+
+.grid td.write {
+    background-color:#ff6600;
+    font-weight:bold; color:white;
+}

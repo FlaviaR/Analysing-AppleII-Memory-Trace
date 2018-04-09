@@ -1,0 +1,164 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<link rel="stylesheet" href="css/foundation/foundation.css">
+		<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+		<script src="js/vendor/modernizr.js"></script>
+		<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+		<script src="js/vendor/modernizr.js"></script>
+		<script src="js/foundation/foundation.js"></script>
+		<script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+		<script type="text/javascript" src="Charts.js"></script>
+	</head>
+</html>
+
+<div class = "row">
+	<div class = "medium-12 medium-centered columns" style = "font-family: 'Open Sans', sans-serif; text-align:center">
+		<h2> Analyzing an Apple II Memory Trace </h2> <br><br>
+		<img src="appleII.jpg" alt="Apple II"><br><br> <br>
+		<h3>How to Reproduce Results</h3>
+		<div style = "font-family: 'Open Sans', sans-serif; text-align:left">
+			The dataset used in this analysis is composed of a subsection of a trace extracted from Marble Madness, an arcade video game published by Antari games in 1984.
+			The trace encompasses the boot up sequence to the machine power-on to when the ball first appears on screen. The game was run on an Apple II computer. <br><br>
+			For more information see:  https://archive.org/details/MarbleMadness4amCrack (has audio, keyboard, disk, lo-res, hi-res accesses) <br>
+			<img src="marbleMadness.png" alt="Marble Madness"><br>
+			The commands used to extract the trace: <br>
+			- mame 0.187 run as (note -log option) <br>
+			./mess64 -debug -window -log apple2e -rompath ../../mess/roms -flop1 ../../mess/images/marblemadness.dsk <br>
+			- watchpoints set as <br>
+			wpset 0,10000,r,1,{logerror "r a=%04x pc=%04x\n", wpaddr, pc; g} <br>
+			wpset 0,10000,w,1,{logerror "w a=%04x pc=%04x\n", wpaddr, pc; g} <br><br>
+		</div>
+		
+		<h3>Data Profile</h3>
+		<img src="sample.png" alt="Data Sample"> <br><br>
+		<div style = "font-family: 'Open Sans', sans-serif; text-align:left">
+			As it can be seen from the table above, the dataset is composed of three main columns and a fourth that was filled up programmatically. <br>
+			<ul>
+			<li>Access Type - The type of access performed. This can either be a read or a write access type. A read will only access the memory address without modifying its contents, while a write will overwrite the current contents in that address. <br> </li>
+			<li>Address - The memory address being accessed. <br> </li>
+			<li>Program Counter - The current program counter of the system which indicates where the computer is in its program sequence. <br> </li>
+			<li>Memory Map - The region of the system architecture that is currently being accessed. This column was added programatically by checking to see which range the accessed memory address falls within according to the table found in: http://www.kreativekorp.com/miscpages/a2info/memorymap.shtml </li>
+			</ul>
+		</div>
+		
+		<h4>Size of Dataset</h4>
+		<div style = "font-family: 'Open Sans', sans-serif; text-align:left">
+			The dataset was originally over 16 million lines long but after realizing that it would be hard to read and to generate over 10 graphs with that many datapoints, I reduced the set to only include the first 200 thousand lines of the original trace.
+		</div> <br> <br>
+
+		
+		<h4>Range of Addresses</h4>
+		<div style = "font-family: 'Open Sans', sans-serif; text-align:left">
+			As this trace was run on an Apple II computer, the range of memory addresses goes from 0000 (0 Bytes) to FFFF (65535 Bytes). Both the memory address and PC columns are specified in these HEX ranges.
+		</div> <br> <br>
+		
+		<h3>Goal of Analysis</h3>
+		<div style = "font-family: 'Open Sans', sans-serif; text-align:left">
+			The goal of this analysis is to figure out code functionality based on very sparse information. The basic idea was to use graphs to visualize the changes in memory accesses and program counter and use them to identify sections of the trace that might correspond to loops, data initialization, data copying, ect...  The following analysis questions will demonstrate what approach was taken for this type of analysis.
+		</div> <br><br>
+		
+		<h3>Issues with Displayed Data</h3>
+		<div style = "font-family: 'Open Sans', sans-serif; text-align:left">
+			There are a couple of problems that make the visualization of the graphs a bit complicated, including the large dataset and the memory addresses that had to be converted from hexadecimal to decimal format. <br>
+			<ul>
+				<li>The large dataset makes it a bit hard to differentiate between different memory accesses as they tend to overlap one another. This was dealt with by splitting up larger graphs into smaller ones. Ideally, however,  a fisheye function would have been used instead as it becomes cumbersome to generate new graphs just to examine areas of interest. </li>
+				<li> The memory addresses had to be converted into decimal format to be used as coordinates in the resulting graphs, as their original hexadecimal format would’ve prevented this from happening. </li>
+			</ul>
+		</div>
+		
+		<h3>Original Questions</h3>
+		<div style = "font-family: 'Open Sans', sans-serif; text-align:left">
+			The original questions selected for this analysis were too vague for the assignment, as demonstrated below.<br><br>
+			<ol>
+			<li>What are hot trace regions in the dataset (frequent execution patterns)?</li>
+			<li>Can compression be used to efficiently reduce the dataset without affecting analysis?</li>
+			<li>Is it possible to detect regions where data is being copied from one place to the other?</li>
+			<li>Is it possible to detect loops with an emphasis on pooling data versus other kinds of loop?</li>
+			<li>As the used trace involves a boot up sequence, which memory regions are accessed the most while initializing the system?
+</li>
+			<li>Could the trace be partitioned into specific regions of initialization (e.g. Which section involves pooling from the the keyboard? Which section initializes the graphics card, ect...)? </li>
+			</ol>
+			
+			Initially, the idea behind the analysis was to use compression algorithms as an aid to detect specific code regions, where areas that were likely to belong to loops or other functionalities would be clustered together. Nonetheless, it is unlikely that compression would be enough to give a reasonable code interpretation and would most likely have to be combined with another technique, making these questions unsuitable considering the amount of time available for this project.
+		</div> <br><br>
+
+		<h3>Updated Questions and Analysis</h3>
+	</div> <br>
+</div>
+
+
+<div class = "row">
+	<div class = "medium-12 medium-centered columns">
+		Q1. Which memory maps are accessed throughout the dataset? Which one is accessed the most? <br>
+		This question was fairly straightforward to answer, as the only thing that was required was to keep track of which memory maps were accessed and the number of accesses performed to each. The resulting count is displayed below:
+
+		<div id="chartContainer1" style = 'margin: 0 auto; height: 400px;'></div> <br>
+		
+		As it can be observed, the memory map that is accessed the most is the area reserved for <b>“Free Space for Machine Language and Shapes, ect…” with a whopping 165,381 accesses </b>. <br><br>
+		I also thought it would be interesting to see how the accesses varied throughout the trace, which can be seen below.
+
+	</div> <br>
+</div>
+
+<div class = "row">
+	<div class = "medium-12 medium-centered columns">
+		Q2. Can interpreter loops be distinguished from the graph containing accesses to the PC?
+
+		<div id="chartContainer2" style = "margin: 0 auto; height: 400px;"></div>
+	</div> <br>
+</div>
+
+<div class = "row">
+	<div class = "medium-12 medium-centered columns">
+		<div id="chartContainer3" style = "margin: 0 auto; height: 400px;"></div>
+	</div> <br>
+</div>
+
+<div class = "row">
+	<div class = "medium-12 medium-centered columns">
+		<div id="chartContainer3_2" style = "margin: 0 auto; height: 400px;"></div>
+	</div> <br>
+</div>
+
+<div class = "row">
+	<div class = "medium-12 medium-centered columns">
+		<div id="chartContainer3_3" style = "margin: 0 auto; height: 400px;"></div>
+	</div> <br>
+</div>
+
+<div class = "row">
+	<div class = "medium-12 medium-centered columns">
+		<div id="chartContainer3_4" style = "margin: 0 auto; height: 400px;"></div>
+	</div> <br>
+</div>
+
+
+<div class = "row">
+	<div class = "medium-12 medium-centered columns">
+		<div id="chartContainer4" style = "margin: 0 auto; height: 400px;"></div>
+	</div> <br>
+</div>
+
+
+<div class = "row">
+	<div class = "medium-12 medium-centered columns">
+		<div id="chartContainer4_1" style = "margin: 0 auto; height: 400px;"></div>
+	</div> <br>
+</div>
+
+<div class = "row">
+	<div class = "medium-12 medium-centered columns">
+		<div id="chartContainer4_2" style = "margin: 0 auto; height: 400px;"></div>
+	</div> <br>
+</div>
+
+
+<div class = "row">
+	<div class = "medium-12 medium-centered columns">
+		<div id="chartContainer5" style = "margin: 0 auto; height: 400px;"></div>
+	</div> <br>
+</div>

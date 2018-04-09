@@ -1,0 +1,214 @@
+body{
+    background-image:url('../imagens/textB.png') !important;  
+    font-family: 'Open Sans', sans-serif !important;
+    text-align: justify;
+}
+
+font.flavulous{
+  background: -webkit-linear-gradient(#2bcd92, #078e83);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.progress{
+    background-color: transparent!important;
+    border-color: #ab9622 !important;
+}
+
+.meter{
+    background: -moz-linear-gradient(45deg, rgba(43,205,146,1) 0%, rgba(43,205,146,1) 40%, rgba(0,128,128,1) 100%) !important; /* ff3.6+ */
+    background: -webkit-gradient(linear, left bottom, right top, color-stop(0%, rgba(43,205,146,1)), color-stop(40%, rgba(43,205,146,1)), color-stop(100%, rgba(0,128,128,1))) !important; /* safari4+,chrome */
+    background: -webkit-linear-gradient(45deg, rgba(43,205,146,1) 0%, rgba(43,205,146,1) 40%, rgba(0,128,128,1) 100%) !important; /* safari5.1+,chrome10+ */
+    background: -o-linear-gradient(45deg, rgba(43,205,146,1) 0%, rgba(43,205,146,1) 40%, rgba(0,128,128,1) 100%) !important; /* opera 11.10+ */
+    background: -ms-linear-gradient(45deg, rgba(43,205,146,1) 0%, rgba(43,205,146,1) 40%, rgba(0,128,128,1) 100%) !important; /* ie10+ */
+    background: linear-gradient(45deg, rgba(43,205,146,1) 0%, rgba(43,205,146,1) 40%, rgba(0,128,128,1) 100%) !important; /* w3c */  
+}
+
+span{
+    text-align: center;
+    font-weight: bold;
+}
+
+
+#hrStar{                         
+    color:#c00 !important;
+    background: url('../imagens/starhr.png') no-repeat scroll center !important;
+    height:50px !important;
+    border:none !important; 
+}
+ul{
+    border: none !important;
+}
+
+h4{
+    font-size: 1.4em !important;
+    font-weight: bold !important;
+    color: #ab9622 !important;
+    font-family: 'Open Sans', sans-serif !important; 
+}
+
+h5{
+    color: #9f8734 !important;
+}
+
+a {
+    color: #ab9622 !important;
+    font-weight: bold;
+}
+
+a:hover {
+    color: #cf7e0b !important;
+}
+
+#menu{
+    max-width: 100% !important;
+    max-height: 61px !important;
+    background-color: black;
+}
+
+#intro{
+    max-width: 100% !important;
+    background-image: url('../imagens/text2.png');
+}
+
+#lngBanner{
+    max-width: 100% !important;
+    max-height: 61px !important;
+    background-color: #cdbb75;
+}
+
+#butActive{
+    background-image: url('../imagens/text2.png') !important;
+}
+
+#end{
+    background-image: url('../imagens/text2.png');
+    max-width: 100% !important;
+    color: white;
+    font-family: 'Coming Soon', sans-serif !important;
+}
+
+.button {
+    background: black !important;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+    color: #ccc;
+    font-size: 18px !important;
+    font-weight: bold !important;
+    font-family: 'Coming Soon', sans-serif !important;
+    text-decoration: none;
+    vertical-align: middle;
+    border: transparent;
+}
+.button:hover {
+    color: #FFA600 !important;
+}
+
+#btnLng{
+    background: transparent !important;
+    border: transparent;
+    color: #362B2E !important;
+}
+
+#btnLng:hover{
+    background: #e7cf6e !important;
+    color: #362B2E !important;
+}
+
+#btnDrop{
+    background: transparent !important;
+    border: transparent;
+    color: #362B2E !important;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+
+#viewB{
+    background: -moz-linear-gradient(45deg, rgba(43,205,146,1) 0%, rgba(43,205,146,1) 40%, rgba(0,128,128,1) 100%) !important; /* ff3.6+ */
+    background: -webkit-gradient(linear, left bottom, right top, color-stop(0%, rgba(43,205,146,1)), color-stop(40%, rgba(43,205,146,1)), color-stop(100%, rgba(0,128,128,1))) !important; /* safari4+,chrome */
+    background: -webkit-linear-gradient(45deg, rgba(43,205,146,1) 0%, rgba(43,205,146,1) 40%, rgba(0,128,128,1) 100%) !important; /* safari5.1+,chrome10+ */
+    background: -o-linear-gradient(45deg, rgba(43,205,146,1) 0%, rgba(43,205,146,1) 40%, rgba(0,128,128,1) 100%) !important; /* opera 11.10+ */
+    background: -ms-linear-gradient(45deg, rgba(43,205,146,1) 0%, rgba(43,205,146,1) 40%, rgba(0,128,128,1) 100%) !important; /* ie10+ */
+    background: linear-gradient(45deg, rgba(43,205,146,1) 0%, rgba(43,205,146,1) 40%, rgba(0,128,128,1) 100%) !important; /* w3c */    
+    border: solid 3px;
+    border-radius: 5px;
+    font-weight: bold !important;
+    font-size: 1.5em !important;
+}
+
+#viewB:hover{
+    background: -moz-linear-gradient(45deg, rgba(171,150,34,1) 0%, rgba(171,150,34,1) 40%, rgba(74,65,15,1) 100%) !important; /* ff3.6+ */
+    background: -webkit-gradient(linear, left bottom, right top, color-stop(0%, rgba(171,150,34,1)), color-stop(40%, rgba(171,150,34,1)), color-stop(100%, rgba(74,65,15,1))) !important; /* safari4+,chrome */
+    background: -webkit-linear-gradient(45deg, rgba(171,150,34,1) 0%, rgba(171,150,34,1) 40%, rgba(74,65,15,1) 100%) !important; /* safari5.1+,chrome10+ */
+    background: -o-linear-gradient(45deg, rgba(171,150,34,1) 0%, rgba(171,150,34,1) 40%, rgba(74,65,15,1) 100%) !important; /* opera 11.10+ */
+    background: -ms-linear-gradient(45deg, rgba(171,150,34,1) 0%, rgba(171,150,34,1) 40%, rgba(74,65,15,1) 100%) !important; /* ie10+ */
+    transition: all 0.3s ease 0s;
+    color: #0AD189 !important;
+}
+
+#title{
+    font-size: 1.3em;
+    color: #900;
+    text-align: center !important;
+}
+
+#footer{
+    background-image: url('../imagens/rippedPaper.png');
+    max-width: 100% !important;
+    max-height: 100% !important;
+    background-repeat: no-repeat !important;
+    color: black;
+}
+
+.imgBox2:hover {
+	-moz-box-shadow: 0 0 15px grey; 
+	-webkit-box-shadow: 0 0 15px grey; 
+	box-shadow: 0 0 15px grey; 
+}
+
+
+.imgBox:hover {
+	-moz-box-shadow: 0 0 15px #ccc; 
+	-webkit-box-shadow: 0 0 15px #ccc; 
+	box-shadow: 0 0 15px #ccc; 
+}
+
+
+#medium{
+    font-size: 1.1em;
+    font-weight: normal;
+}
+
+#cf {
+  position:relative;
+  margin:0 auto;
+  height: 120px;
+  width: 120px;
+}
+
+#cf img {
+  position:absolute;
+  left:0;
+  -webkit-transition: opacity 0.5s ease-in-out;
+  -moz-transition: opacity 0.5s ease-in-out;
+  -o-transition: opacity 0.5s ease-in-out;
+  transition: opacity 0.5s ease-in-out;
+}
+
+#cf img.bottom{
+    opacity: 0;
+}
+
+#cf:hover > img.bottom {
+    opacity: 1.0;
+}
+
+#cf img.top:hover {
+  opacity:0;
+}
+
+#fontHover:hover{
+    color: red;
+}
