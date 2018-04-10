@@ -4,6 +4,7 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<link rel="stylesheet" href="css/foundation/foundation.css">
+		<link rel="stylesheet" href="css/683.css">
 		<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
 
 		<script src="js/vendor/modernizr.js"></script>
@@ -23,25 +24,41 @@
 		<div style = "font-family: 'Open Sans', sans-serif; text-align:left">
 			The dataset used in this analysis is composed of a subsection of a trace extracted from Marble Madness, an arcade video game published by Antari games in 1984.
 			The trace encompasses the boot up sequence to the machine power-on to when the ball first appears on screen. The game was run on an Apple II computer. <br><br>
-			For more information see:  https://archive.org/details/MarbleMadness4amCrack (has audio, keyboard, disk, lo-res, hi-res accesses) <br>
-			<img src="marbleMadness.png" alt="Marble Madness"><br>
-			The commands used to extract the trace: <br>
+			For more information regarding the game files, click  <a href=" https://archive.org/details/MarbleMadness4amCrack ">here</a>. <br><br>		</div>
+	</div>
+	
+	<div class="medium-4 columns"><img src="marbleMadness.png" alt="Marble Madness"></div>
+	<div class="medium-4 columns"><img src="marbleMadness2.png" alt="Marble Madness"></div>
+	<div class="medium-4 columns"><img src="marbleMadness3.png" alt="Marble Madness"></div><br>
+</div>
+
+
+<div class = "row">
+	<div class = "medium-12 medium-centered columns" style = "font-family: 'Open Sans', sans-serif; text-align:center">
+		<b>Figure 1</b>. Screenshots from Marble Madness emulator.
+
+		<div style = "font-family: 'Open Sans', sans-serif; text-align:left">
+
+			<br>The commands used to extract the trace: <br><br>
 			- mame 0.187 run as (note -log option) <br>
 			./mess64 -debug -window -log apple2e -rompath ../../mess/roms -flop1 ../../mess/images/marblemadness.dsk <br>
 			- watchpoints set as <br>
 			wpset 0,10000,r,1,{logerror "r a=%04x pc=%04x\n", wpaddr, pc; g} <br>
 			wpset 0,10000,w,1,{logerror "w a=%04x pc=%04x\n", wpaddr, pc; g} <br><br>
 		</div>
+	
+	
+		<hr>
 		
 		<h3>Data Profile</h3>
-		<img src="sample.png" alt="Data Sample"> <br><br>
+		<img src="sample.png" alt="Data Sample"><br> <b>Table 1</b>. Screenshot of a section of the dataset. <br><br>
 		<div style = "font-family: 'Open Sans', sans-serif; text-align:left">
 			As it can be seen from the table above, the dataset is composed of three main columns and a fourth that was filled up programmatically. <br>
 			<ul>
 			<li>Access Type - The type of access performed. This can either be a read or a write access type. A read will only access the memory address without modifying its contents, while a write will overwrite the current contents in that address. <br> </li>
 			<li>Address - The memory address being accessed. <br> </li>
 			<li>Program Counter - The current program counter of the system which indicates where the computer is in its program sequence. <br> </li>
-			<li>Memory Map - The region of the system architecture that is currently being accessed. This column was added programatically by checking to see which range the accessed memory address falls within according to the table found in: http://www.kreativekorp.com/miscpages/a2info/memorymap.shtml </li>
+			<li>Memory Map - The region of the system architecture that is currently being accessed. This column was added programatically according to the table found in: http://www.kreativekorp.com/miscpages/a2info/memorymap.html. </li>
 			</ul>
 		</div>
 		
@@ -53,23 +70,31 @@
 		
 		<h4>Range of Addresses</h4>
 		<div style = "font-family: 'Open Sans', sans-serif; text-align:left">
-			As this trace was run on an Apple II computer, the range of memory addresses goes from 0000 (0 Bytes) to FFFF (65535 Bytes). Both the memory address and PC columns are specified in these HEX ranges.
+			As this trace was run on an Apple II computer, which only contains 65kB of memory, the range of the memory addresses goes from 0000 (0 Bytes) to FFFF (65535 Bytes). Both the memory address and PC columns are specified in HEX.
 		</div> <br> <br>
 		
+		<hr>
+
+
 		<h3>Goal of Analysis</h3>
 		<div style = "font-family: 'Open Sans', sans-serif; text-align:left">
-			The goal of this analysis is to figure out code functionality based on very sparse information. The basic idea was to use graphs to visualize the changes in memory accesses and program counter and use them to identify sections of the trace that might correspond to loops, data initialization, data copying, ect...  The following analysis questions will demonstrate what approach was taken for this type of analysis.
+			The goal of this analysis is to determine code functionality based on very sparse information. The basic idea was to use graphs to visualize the changes in memory accesses and program counter values and use them to identify sections of the trace that might correspond to loops, data initialization, data copying, and other interesting functionalities.
 		</div> <br><br>
 		
+		<hr>
+
+
 		<h3>Issues with Displayed Data</h3>
 		<div style = "font-family: 'Open Sans', sans-serif; text-align:left">
-			There are a couple of problems that make the visualization of the graphs a bit complicated, including the large dataset and the memory addresses that had to be converted from hexadecimal to decimal format. <br>
-			<ul>
-				<li>The large dataset makes it a bit hard to differentiate between different memory accesses as they tend to overlap one another. This was dealt with by splitting up larger graphs into smaller ones. Ideally, however,  a fisheye function would have been used instead as it becomes cumbersome to generate new graphs just to examine areas of interest. </li>
-				<li> The memory addresses had to be converted into decimal format to be used as coordinates in the resulting graphs, as their original hexadecimal format would’ve prevented this from happening. </li>
+			There are a couple of problems that make the visualization of these graphs a bit annoying, including the quite large dataset size and the memory addresses that could only be interpreted in decimal format, forcing the conversion from hexadecimal (which is the standard for memory addresses) to decimal (which make the addresses a bit unreadable).			<ul>
+				<li>The large dataset makes it somewhat hard to differentiate between different memory accesses, as they tend to overlap one another. This was dealt with by splitting up larger graphs into smaller ones. Ideally, however,  a fisheye function would have been used instead as it becomes cumbersome to generate new graphs just to examine areas of interest. </li>
+				<li> The memory addresses and PC values had to be converted into decimal format to be used as coordinates in the resulting graphs. This had to be done since their original hexadecimal format, which are interpreted as strings, would have prevented them from being used as coordinates. </li>
 			</ul>
 		</div>
 		
+		<hr>
+
+
 		<h3>Original Questions</h3>
 		<div style = "font-family: 'Open Sans', sans-serif; text-align:left">
 			The original questions selected for this analysis were too vague for the assignment, as demonstrated below.<br><br>
@@ -83,8 +108,11 @@
 			<li>Could the trace be partitioned into specific regions of initialization (e.g. Which section involves pooling from the the keyboard? Which section initializes the graphics card, ect...)? </li>
 			</ol>
 			
-			Initially, the idea behind the analysis was to use compression algorithms as an aid to detect specific code regions, where areas that were likely to belong to loops or other functionalities would be clustered together. Nonetheless, it is unlikely that compression would be enough to give a reasonable code interpretation and would most likely have to be combined with another technique, making these questions unsuitable considering the amount of time available for this project.
+			These questions were initially developed with the idea of using compression as an aid to detect specific code regions, where areas that were likely to belong to loops, data initializations, ect..., would be clustered together. Nonetheless, it is unlikely that compression would have been enough to give a reasonable code interpretation and would most likely have to be combined with other techniques to develop an accurate analysis. Which would be a bit unreasonable considering the time limit given for this assignment, especially since these techniques would have to be throughly tested out and implemented before performing the analysis. Which would have been out of scope for this project.
 		</div> <br><br>
+
+		<hr>
+
 
 		<h3>Updated Questions and Analysis</h3>
 	</div> <br>
@@ -92,73 +120,140 @@
 
 
 <div class = "row">
-	<div class = "medium-12 medium-centered columns">
-		Q1. Which memory maps are accessed throughout the dataset? Which one is accessed the most? <br>
-		This question was fairly straightforward to answer, as the only thing that was required was to keep track of which memory maps were accessed and the number of accesses performed to each. The resulting count is displayed below:
+	<div class = "medium-12 medium-centered columns" >
+		<b>Q1. Which memory maps were accessed throughout the dataset? Which one was accessed the most?</b> <br>
+		This question was fairly straightforward to answer, as the only requirement was to keep track of which memory maps were accessed throughout the trace and the number of accesses performed to each. The resulting count is displayed below: <br>
 
 		<div id="chartContainer1" style = 'margin: 0 auto; height: 400px;'></div> <br>
 		
-		As it can be observed, the memory map that is accessed the most is the area reserved for <b>“Free Space for Machine Language and Shapes, ect…” with a whopping 165,381 accesses </b>. <br><br>
-		I also thought it would be interesting to see how the accesses varied throughout the trace, which can be seen below.
+		As it can be observed, the memory map that was accessed the most was the area reserved for <b>“Free Space for Machine Language and Shapes, ect…” with a whopping 165,381 accesses </b>. <br><br>
+		The graph below shows how the accesses to the memory map varied throughout the trace. This high level overview of the accesses wasn't particularly useful in analysing the code functionality but at least it quite distinctly shows where accesses to the Free Space for Machine Language occured.
 
 	</div> <br>
 </div>
 
 <div class = "row">
 	<div class = "medium-12 medium-centered columns">
-		Q2. Can interpreter loops be distinguished from the graph containing accesses to the PC?
-
 		<div id="chartContainer2" style = "margin: 0 auto; height: 400px;"></div>
 	</div> <br>
 </div>
 
+<hr>
+
 <div class = "row">
 	<div class = "medium-12 medium-centered columns">
-		<div id="chartContainer3" style = "margin: 0 auto; height: 400px;"></div>
+		<b>Q2. Can interpreter loops be distinguished from the graph containing accesses to the PC?</b> <br>
+		<b>Q3. Can tight loops be distinguished from the same graph?</b> <br><br>
+		Interpreters are programs capable of directly executing instructions written in a programming language without requiring the code to have been compiled into machine language beforehand. <a href="https://en.wikipedia.org/wiki/Interpreter_(computing)">[1]</a> Loops can be found by examining the PC values, as they will display periodic patterns where an address will be continuously accessed over a period of time.<br> A loop might be called "<i>tight</i>" if the range of addresses that it accessed is in close proximity to one another. <br><br>
+		
+		A possible interpreter loop is displayed below (in my very beautiful hand drawn graph): <br><br>
+	</div>
+	<div class = "medium-12 medium-centered columns" style = "font-family: 'Open Sans', sans-serif; text-align:center">
+		<img src="interpreterLoop.png" alt="Interpretor Loop"><br>
+		<b>Figure 2</b>. Graph demonstrating a possible interpreter loop. A periodic function can be seen as the PC continuously returns to its original memory address.<br><br>
+	</div>
+	
+	<div class = "medium-12 medium-centered columns">
+		Figure 2 displays the PC values that would be accessed when the code on the right of the figure was interpreted. Of course under the assumption that the instructions within the switch statement were responsible for decrementing the PC back down during its instruction run. <br><br><br>
+
+		Let's take a look at the graph below and see which regions might correspond to loops. <br><br>
+		
+		<div id="chartContainer3" style = "margin: 0 auto; height: 400px;"></div> <br><br>
+		
+		Considering that we are looking for periodic patterns, there are a couple of regions of interest as shown: <br><br>
+		<img src="loops.png" alt="Interpretor Loop"><br><br>
+		
+		Even though there aren't any regions in the graph that match up with the example shown in Figure 2, the regions circled above seem to quite likely be loops.
+
 	</div> <br>
 </div>
 
 <div class = "row">
 	<div class = "medium-12 medium-centered columns">
+		Zooming into the first selection (lines 27,500 to 40,000) it can be noticed that this section is most likely a loop as the PC periodically returns to address 64,484 (FBE4).<br>
+		And since the accessed addresses are pretty close in range (varying only by a couple hundred bytes), this loop could be considered <i>tightly knit</i>.<br><br>
+		Hover your mouse below to check for yourself. <br>
 		<div id="chartContainer3_2" style = "margin: 0 auto; height: 400px;"></div>
 	</div> <br>
 </div>
 
 <div class = "row">
 	<div class = "medium-12 medium-centered columns">
+		Moving on to the next region of interest, and generating a graph with an emphasis on lines 120,000 to 125,000 of the trace, another loop can be detected.<br>
+		This one is not so much of a "tight" loop (as its address range varies by almost 15KB) but it still demonstrates looping behavior as it repeatedly returns to access 49,460(C134) - 49,457(C131), as shown below:<br>
 		<div id="chartContainer3_3" style = "margin: 0 auto; height: 400px;"></div>
 	</div> <br>
 </div>
 
 <div class = "row">
 	<div class = "medium-12 medium-centered columns">
+		Finally, lets take a look at the last region of interest. Another periodic behavior can be found as the PC continuously returns to address 50,767 (C64F).
 		<div id="chartContainer3_4" style = "margin: 0 auto; height: 400px;"></div>
+	</div> <br><br>
+	It would be necessary to throw these lines in a disassembler to gather more information regarding these loops. It is uncertain if they could actually be considered "interpreter loops" but at least we were able to limit areas of interest for futher examination. <br><br>
+</div>
+
+<hr>
+
+<div class = "row">
+	<div class = "medium-12 medium-centered columns">
+		<b>Q4.Which patterns emerge when plotting non-instruction reads and writes within the same graph? Is it possible to detect sections of the trace that might correspond to data initialization? </b><br>
+		<b>Q5. Using the graph generated from questions 5, is it possible to detect sections of the trace that deal with copying data from one place to another? </b><br><br>
+		Non-instruction read and write accesses are data accesses that do not correspond to an instruction fetch (read access and memory address = PC address) nor to a self modifying code section (write access and memory address = PC address). These accesses are usually part of a code block and are useful to examine as they can give hints as to the underlying function of that code section.<br><br> The trick to determine which lines of the trace correspond to non-instruction reads and writes is to keep track of memory addresses that are at least a constant C value away from the PC addresses. Where C is an heuristically determined constant. The chosen constant for my analysis was 5 bytes. So any line that contained a memory address that was at least 5 bytes away from the PC address was added to the graph. It is necessary to use this constant C when selecting lines to prevent false-negative instruction fetches, as some times instruction fetches are split into low and high address fetches which would result in PC addresses that were different from the memory addresses, but still fairly close in range. <br><br>
+		Non-instruction read and writes are useful to determine regions that may correspond to data initialization or data copying as shown by the figure below. <br><br>
+	</div>
+	
+	<div class = "medium-12 medium-centered columns" style = "font-family: 'Open Sans', sans-serif; text-align:center">
+		<img src="copyData.png" alt="Data COpy"><br> <b>Figure 3</b>. Graph demonstrating patterns that may correspond to data initialization and data copies. <br><br>
+	</div>
+	
+	<div class = "medium-12 medium-centered columns">
+		Figure 3 displays patterns that would be of interest to us. Data initialization would be composed of single reads followed by writes, while data copies would be composed of continuous reads followed by continuoues writes. <br><br>
+		
+		The graph below displays all non instruction reads and writes within the dataset.
+
+		<div id="chartContainer4" style = "margin: 0 auto; height: 400px;"></div> <br> <br>
+		
+		There is an interesting "see saw" pattern going on between lines 118,000 to 140,000. And by taking a closser look, the following is visible: <br><br>
 	</div> <br>
 </div>
 
 
 <div class = "row">
 	<div class = "medium-12 medium-centered columns">
-		<div id="chartContainer4" style = "margin: 0 auto; height: 400px;"></div>
-	</div> <br>
-</div>
-
-
-<div class = "row">
-	<div class = "medium-12 medium-centered columns">
-		<div id="chartContainer4_1" style = "margin: 0 auto; height: 400px;"></div>
+		<div id="chartContainer4_1" style = "margin: 0 auto; height: 400px;"></div> <br><br>
+		
+		Which is still a bit hard to interpret. Let's try zooming in a bit more between lines 18,000 to 19,500: <br>
 	</div> <br>
 </div>
 
 <div class = "row">
 	<div class = "medium-12 medium-centered columns">
-		<div id="chartContainer4_2" style = "margin: 0 auto; height: 400px;"></div>
+		<div id="chartContainer4_2" style = "margin: 0 auto; height: 400px;"></div> <br><br>
+		The displayed pattern doesn't really match up with the expected patterns drawn in Figure 3. There appears to be repeated 'read' triangular artifacts occuring at the top of the graph, which are most likely noise that showed up due to the selected constant C (5 Bytes of difference between the memory address and PC). If a more accurate constant had been chosen, these artifacts would probably dissapear.<br><br>
+		The read and write patterns that are displayed at the bottom of the graph may or may not be initialization sections, however it is hard to tell without the use of a disassembler.<br><br>
+		
+		But screw it. To satisfy my curiosity, I threw those lines into a disassembler to see which instructions were actually being fetched and written.<br>
 	</div> <br>
+	
+	<div class = "medium-12 medium-centered columns" style = "font-family: 'Open Sans', sans-serif; text-align:center">
+		<img src="disassembler.png" alt="Data COpy"><br> <b>Figure 4</b>. Those lines were actually initializing the screen of the game. Wow. <br><br>
+	</div>
+	
+	<div class = "medium-12 medium-centered columns">
+		So boom. That section of the graph did in fact deal with data initialization and were responsible for initializing the screen of the game.<br><br> Even though we were a bit unlucky to not find any data copies, we at least found an interesting initialization pattern. More of these patterns could be found in later parts of the trace, where the game was actually being played. The first million lines are so are most likely going to be dealing with initialization and not with data copies.
+	</div>
+	
 </div>
 
+<hr>
 
 <div class = "row">
 	<div class = "medium-12 medium-centered columns">
+		<b>Q6. Where do instruction fetches occur within the trace?</b><br><br>
+		An instruction fetch is a process by which the computer retrieves a program instruction from its memory, determines which action the instruction dictates, and carries out those actions. <a href="https://en.wikipedia.org/wiki/Instruction_cycle">[2]</a> An instruction fetch operation can be found within the trace by searching for lines that include a read access and a memory access that matches up with the PC address, such as: <i> r 0400 0400 Text Video Page and Peripheral Screenholes</i>, where both the memory address and PC access address 0400.<br><br>
+		The graph below displays all instruction fetches found within the dataset. It matches up fairly well with the PC graph found in Q2 and Q3, although it does display a few more spikes in its display. Which most likely occur due to skipping the PC values that do not correspond to instruction fetches. <br>
+		The large number of instruction fetches displayed below is expected, considering that the dataset only includes the first 200 thousand lines of the original trace, which involve large amounts of data initialization operations which, in turn, require a large amount of instruction fetches.
 		<div id="chartContainer5" style = "margin: 0 auto; height: 400px;"></div>
 	</div> <br>
 </div>
